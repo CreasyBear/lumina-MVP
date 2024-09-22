@@ -9,35 +9,39 @@ if [ -f .env ]; then
 fi
 
 # Check for required environment variables
-if [ -z "$DIGITALOCEAN_ACCESS_TOKEN" ] || [ -z "$APP_ID" ] || [ -z "$DROPLET_IP" ] || [ -z "$DROPLET_SSH_KEY" ]; then
-    echo "Error: DIGITALOCEAN_ACCESS_TOKEN, APP_ID, DROPLET_IP, and DROPLET_SSH_KEY must be set in .env file"
+if [ -z "$DATABASE_URL" ] || [ -z "$SECRET_KEY" ]; then
+    echo "Error: DATABASE_URL and SECRET_KEY must be set in .env file"
     exit 1
 fi
 
-# Build the Docker image
-echo "Building Docker image..."
-docker build -t lumina-backend:latest lumina-backend
+# Navigate to the project directory
+cd /path/to/your/project
 
-# Tag the image for DigitalOcean Container Registry
-echo "Tagging Docker image..."
-docker tag lumina-backend:latest registry.digitalocean.com/lumina/lumina-backend:latest
+# Pull the latest changes
+git pull origin main
 
-# Push the image to DigitalOcean Container Registry
-echo "Pushing Docker image to DigitalOcean Container Registry..."
-docker push registry.digitalocean.com/lumina/lumina-backend:latest
+# Backend setup
+cd lumina-backend
 
-# Deploy to the Droplet
-echo "Deploying to Droplet..."
-ssh -i "$DROPLET_SSH_KEY" root@"$DROPLET_IP" << EOF
-    docker pull registry.digitalocean.com/lumina/lumina-backend:latest
-    docker stop lumina-backend || true
-    docker rm lumina-backend || true
-    docker run -d --name lumina-backend -p 8000:8000 \
-        -e HOST=0.0.0.0 \
-        -e PORT=8000 \
-        -e DATABASE_URL=${DATABASE_URL} \
-        -e SECRET_KEY=${SECRET_KEY} \
-        registry.digitalocean.com/lumina/lumina-backend:latest
-EOF
+# Install backend dependencies
+pip install -r requirements.lock
+
+# Run database migrations (if using Alembic)
+alembic upgrade head
+
+# Start the backend server
+nohup uvicorn main:app --host 0.0.0.0 --port 8000 &
+
+# Frontend setup
+cd ../lumina-frontend
+
+# Install frontend dependencies
+npm install
+
+# Build the frontend
+npm run build
+
+# Start the frontend server (assuming you're using a Node.js server for production)
+nohup npm start &
 
 echo "Deployment completed successfully!"
