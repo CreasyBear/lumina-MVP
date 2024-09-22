@@ -15,7 +15,7 @@ if [ -z "$DATABASE_URL" ] || [ -z "$SECRET_KEY" ]; then
 fi
 
 # Navigate to the project directory
-cd /path/to/your/project
+cd /Users/joelchan/Documents/Coding/App-Dev/lumina/src
 
 # Pull the latest changes
 git pull origin main
