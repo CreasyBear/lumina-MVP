@@ -1,0 +1,17 @@
+name: lumina-backend
+services:
+  - name: web
+    image:
+      registry_type: DOCR
+      repository: lumina-backend
+      tag: latest
+    envs:
+      - key: HOST
+        value: ${HOST}
+      - key: PORT
+        value: ${PORT}
+      - key: DATABASE_URL
+        value: ${DATABASE_URL}
+      - key: SECRET_KEY
+        value: ${SECRET_KEY}
+
