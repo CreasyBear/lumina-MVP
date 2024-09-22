@@ -1,86 +1,90 @@
 # Lumina AI-Assisted Consulting Tool
 
-## Overview
+## Project Overview
 
-Lumina is an AI-powered consulting tool designed to assist in problem decomposition, analysis, and solution generation for complex consulting projects. It leverages advanced language models and interactive visualizations to provide insights and streamline the consulting process.
+Lumina is an AI-powered tool designed to assist in problem decomposition, analysis, and solution generation for complex consulting projects. It focuses on maintaining context throughout the development process and provides a comprehensive suite of features for consultants and business analysts.
 
 ## Key Features
 
-- Problem input and management
-- AI-driven problem decomposition
-- Interactive visualization of problem segments
-- Assumption management with Monte Carlo analysis
-- Literature review integration
-- User authentication and profile management
-- Modular AI model selection
+1. Problem input interface
+2. LLM-driven problem decomposition
+3. Interactive visualization of problem segments and dependencies
+4. Data capture and management for each segment
+5. Progress tracking and reporting
+6. Assumption management and impact analysis
+7. Integration of literature reviews and data analysis
+8. Modular AI model selection
 
-## Architecture
-
-Lumina uses a modern, scalable architecture:
+## Technical Stack
 
 - Frontend: Next.js with TypeScript
 - Backend: Python with FastAPI
-- AI Integration: LlamaIndex and OpenAI
 - Database: PostgreSQL
-- Authentication: Clerk
-- Deployment: Vercel (frontend) and LlamaIndex-Deploy (backend)
+- AI Integration: LlamaIndex for multiple LLM support
+- Deployment: Docker and Digital Ocean
 
-## Getting Started
+## Project Status
+
+The project has made significant progress in implementing key features and meeting technical requirements. The core functionality for problem management, analysis, and literature review is in place. Recent improvements include:
+
+- Implementation of Clerk authentication for secure user management
+- Creation of sign-in and sign-up pages using Clerk components
+- Development of a custom user profile page
+- Updated layout to include navigation with authentication-aware components
+- Implementation of protected routes and API endpoints using Clerk middleware
+
+## Setup and Installation
+
+### Backend Setup
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-repo/lumina-ai-consulting.git
-   cd lumina-ai-consulting
+   git clone [repository_url]
+   cd lumina-backend
+   ```
+
+2. Set up a virtual environment:
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   ```
+
+3. Install dependencies:
+   ```
+   pip install -r requirements.lock
+   ```
+
+4. Set up environment variables:
+   Create a `.env` file in the `lumina-backend` directory with the following variables:
+   ```
+   DATABASE_URL=postgresql://[username]:[password]@[host]:[port]/[database_name]
+   SECRET_KEY=[your_secret_key]
+   ```
+
+5. Run database migrations:
+   ```
+   alembic upgrade head
+   ```
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+   ```
+   cd ../lumina-frontend
    ```
 
 2. Install dependencies:
    ```
    npm install
-   pip install -r requirements.txt
    ```
 
 3. Set up environment variables:
-   - Copy `.env.example` to `.env.local` and fill in the required values
-   - Ensure you have valid API keys for OpenAI and Clerk
-
-4. Run the development server:
+   Create a `.env.local` file in the `lumina-frontend` directory with:
    ```
-   npm run dev
+   NEXT_PUBLIC_API_URL=http://localhost:8000
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+## Running the Application
 
-## Deployment
-
-### Frontend (Vercel)
-
-1. Connect your GitHub repository to Vercel
-2. Configure environment variables in Vercel dashboard
-3. Deploy using Vercel's automatic deployment
-
-### Backend (LlamaIndex-Deploy)
-
-1. Install LlamaIndex-Deploy:
-   ```
-   pip install llama-index-deploy
-   ```
-
-2. Configure your LlamaIndex-Deploy settings in `llama_index_deploy_config.yaml`
-
-3. Deploy your backend:
-   ```
-   llama-index-deploy up
-   ```
-
-## Testing
-
-Run the test suite:
-npm run test
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+### Backend
+From the `lumina-backend` directory, run:
